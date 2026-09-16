@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Меню свидания</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Manrope:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#241026;
+    --night-deep:#180a1a;
+    --blush:#F4DDE4;
+    --blush-dim:rgba(244,221,228,.62);
+    --amber:#F0A65C;
+    --mint:#8FC2B0;
+    --rule:rgba(244,221,228,.28);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--night-deep);
+    background-image:radial-gradient(120% 70% at 50% 0%, #351632 0%, var(--night) 45%, var(--night-deep) 100%);
+    color:var(--blush);
+    font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:17px;
+    line-height:1.6;
+    min-height:100vh;
+    padding:clamp(20px,5vw,64px) 18px 64px;
+  }
+  .sheet{
+    max-width:640px;
+    margin:0 auto;
+    border:1px solid var(--rule);
+    border-radius:2px;
+    padding:clamp(24px,5vw,56px) clamp(20px,5vw,52px) clamp(32px,5vw,56px);
+    background:rgba(0,0,0,.12);
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead{text-align:center;padding-bottom:22px;border-bottom:1px solid var(--rule);}
+  h1{
+    font-family:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+    font-weight:500;
+    font-size:clamp(2.7rem,9vw,4.2rem);
+    line-height:1;
+    margin:0;
+  }
+  .masthead p{
+    margin:14px 0 0;
+    font-size:.92rem;
+    letter-spacing:.04em;
+    color:var(--blush-dim);
+  }
+
+  /* ---------- running order ---------- */
+  .chosen{margin:24px 0 0;padding:0;list-style:none;font-size:.9rem;color:var(--blush-dim);}
+  .chosen li{display:flex;gap:10px;align-items:baseline;padding:3px 0;}
+  .chosen .num{font-family:"Cormorant Garamond",serif;font-size:1.05rem;color:var(--amber);min-width:1.6em;}
+  .chosen button{
+    background:none;border:0;padding:0;margin-left:auto;
+    color:var(--blush-dim);font-family:inherit;font-size:.8rem;
+    text-decoration:underline;text-underline-offset:3px;cursor:pointer;
+  }
+  .chosen button:hover{color:var(--amber);}
+
+  /* ---------- course ---------- */
+  .course{margin-top:38px;}
+  .course-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px;}
+  .course-num{
+    font-family:"Cormorant Garamond",serif;font-size:1.1rem;color:var(--amber);
+    letter-spacing:.1em;
+  }
+  .course h2{
+    font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;
+    font-size:clamp(1.7rem,5.5vw,2.3rem);margin:0;line-height:1.15;
+  }
+  .course-note{margin:0 0 26px;color:var(--blush-dim);font-size:.92rem;}
+
+  .options{list-style:none;margin:0;padding:0;}
+  .option{
+    width:100%;text-align:left;background:none;border:0;cursor:pointer;
+    color:inherit;font-family:inherit;padding:14px 0;
+    border-bottom:1px solid var(--rule);
+    display:block;
+  }
+  .options li:first-child .option{border-top:1px solid var(--rule);}
+  .option-line{display:flex;align-items:baseline;gap:8px;}
+  .option-name{font-family:"Cormorant Garamond",serif;font-size:1.35rem;font-weight:500;}
+  .leader{flex:1;border-bottom:1px dotted var(--rule);transform:translateY(-5px);}
+  .pick{font-size:.78rem;color:var(--amber);opacity:0;transition:opacity .15s ease;}
+  .option-desc{display:block;margin-top:2px;font-size:.9rem;color:var(--blush-dim);font-style:italic;}
+  .option:hover .pick,.option:focus-visible .pick{opacity:1;}
+  .option:hover .option-name,.option:focus-visible .option-name{color:var(--amber);}
+  .option:focus-visible{outline:2px solid var(--mint);outline-offset:4px;}
+
+  /* ---------- the plan ---------- */
+  .plan{margin-top:34px;}
+  .plan h2{
+    font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;
+    font-size:clamp(1.9rem,6vw,2.6rem);margin:0 0 4px;
+  }
+  .plan .stamp{
+    color:var(--mint);font-size:.82rem;letter-spacing:.1em;margin:0 0 24px;
+  }
+  .plan-body p{margin:0 0 18px;max-width:58ch;}
+  .plan-body p:first-child::first-letter{
+    font-family:"Cormorant Garamond",serif;font-size:3.4rem;line-height:.8;
+    float:left;padding:6px 10px 0 0;color:var(--amber);
+  }
+  .card{
+    border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+    padding:20px 0;margin:28px 0;
+  }
+  .card dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:8px 18px;font-size:.95rem;}
+  .card dt{color:var(--blush-dim);font-size:.85rem;}
+  .card dd{margin:0;font-family:"Cormorant Garamond",serif;font-size:1.15rem;}
+  .restart{
+    background:none;border:1px solid var(--rule);color:var(--blush);
+    font-family:inherit;font-size:.9rem;padding:11px 22px;border-radius:2px;cursor:pointer;
+  }
+  .restart:hover{border-color:var(--amber);color:var(--amber);}
+  .restart:focus-visible{outline:2px solid var(--mint);outline-offset:3px;}
+
+  .reveal{animation:rise .5s ease both;}
+  @keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  @media (prefers-reduced-motion:reduce){.reveal{animation:none;}*{transition:none!important;}}
+</style>
+</head>
+<body>
+<main class="sheet">
+  <header class="masthead">
+    <h1>Меню свидания</h1>
+    <!-- Personalise this line: put her name in. -->
+    <p>Три пункта. Ты выбираешь — я организую.</p>
+    <ul class="chosen" id="chosen"></ul>
+  </header>
+  <div id="stage"></div>
+</main>
+
+<script>
+const NUMERALS = ["I","II","III"];
+
+const endings = [
+  {id:"dessert", name:"Десерт в другом месте",
+   desc:"Вторая остановка, только ради сладкого.",
+   story:"Потом идём за десертом — уже в другое место, за маленький столик, и берём то, что лучше всего выглядит на витрине."},
+  {id:"drink", name:"Один бокал в хорошем баре",
+   desc:"Приглушённый свет, никакой спешки, ещё один час.",
+   story:"После этого находим бар с приглушённым светом и остаёмся на один бокал, который превратится в два."},
+  {id:"walk", name:"Домой длинной дорогой",
+   desc:"Никакого транспорта. Только мы и разговор.",
+   story:"А потом идём домой длинной дорогой, никуда не торопясь, по улицам, которые точно не самые короткие."},
+  {id:"icecream", name:"Мороженое с собой",
+   desc:"Съедим на улице, скорее всего, замёрзнув.",
+   story:"По дороге берём мороженое и едим его на улице, несмотря на погоду."},
+  {id:"couch", name:"Сразу на диван",
+   desc:"Плед и что-нибудь фоном.",
+   story:"И сразу домой на диван, под плед, под что-то уже сто раз виденное фоном."}
+];
+
+const activities = [
+  {
+    id:"restaurant", name:"Ужин в городе", desc:"Забронированный столик и настоящий вечер.",
+    intro:"Идём ужинать.",
+    q:"Что будем есть?",
+    options:[
+      {name:"Итальянское", desc:"Паста, слишком много хлеба, бутылка красного.",
+       story:"Итальянское: паста, непозволительно много хлеба и бутылка красного, в котором мы оба сделаем вид, что разбираемся."},
+      {name:"Суши", desc:"Маленькие тарелки, зелёный чай, без спешки.",
+       story:"Суши: маленькие тарелки одна за другой, зелёный чай и никакой спешки."},
+      {name:"Мексиканское или тапас", desc:"Много всего понемногу, и всё пополам.",
+       story:"Что-нибудь, чем можно делиться — тапас или мексиканское: стол в маленьких тарелках, и ни одна из них не только моя."},
+      {name:"Бургеры и картошка фри", desc:"Никакого дресс-кода и никаких понтов.",
+       story:"Бургеры и картошка фри: никакого дресс-кода, никаких понтов — просто сделано как надо."},
+      {name:"То, что мы ещё не пробовали", desc:"Кухня, которую никто из нас не знает.",
+       story:"Место, где никто из нас ещё не ел — кухня, которую не угадать, и заказ почти вслепую."}
+    ]
+  },
+  {
+    id:"arcade", name:"Вечер в игровых автоматах", desc:"Шумно, азартно и немного по-детски.",
+    intro:"Вечер проводим в зале с автоматами.",
+    q:"Во что играем?",
+    options:[
+      {name:"Старые автоматы", desc:"Две монеты и один проигранный спор о рекорде.",
+       story:"Идём к старым автоматам, скармливаем им монеты и спорим, чей рекорд был настоящим."},
+      {name:"Боулинг", desc:"Ужасные ботинки, приличные броски.",
+       story:"Боулинг — в этих ужасных ботинках и с честным счётом, иначе не считается."},
+      {name:"Лазертаг", desc:"Ты победишь. Мы оба это знаем.",
+       story:"Лазертаг — и мы оба заранее знаем, чем это для меня закончится."},
+      {name:"Бильярд и аэрохоккей", desc:"До двух побед. Проигравший платит.",
+       story:"Бильярд и аэрохоккей, до двух побед, и проигравший платит за то, что будет дальше."},
+      {name:"Автоматы с игрушками", desc:"Пока что-нибудь не выпадет.",
+       story:"И упрямо скармливаем деньги автомату с игрушками, пока оттуда наконец что-нибудь не выпадет."}
+    ]
+  },
+  {
+    id:"cinema", name:"Кино", desc:"Большой экран и попкорн на двоих.",
+    intro:"Идём в кино.",
+    q:"Что смотрим?",
+    options:[
+      {name:"Что-то новое в прокате", desc:"Громко, масштабно, думать не надо.",
+       story:"Что-нибудь только что вышедшее — громкое, большое и не требующее от нас ровным счётом ничего."},
+      {name:"Что-нибудь романтическое", desc:"Без всяких оправданий.",
+       story:"Что-нибудь романтическое, выбранное без единого оправдания."},
+      {name:"Что-нибудь страшное", desc:"Повод держаться за мою руку.",
+       story:"Что-нибудь страшное — удобный повод держаться за мою руку весь сеанс."},
+      {name:"Мультфильм", desc:"Для этого никто не слишком взрослый.",
+       story:"Мультфильм, потому что для этого ни один из нас не слишком взрослый."},
+      {name:"Старый любимый фильм", desc:"Тот, который мы уже знаем наизусть.",
+       story:"Старый любимый фильм на большом экране — тот, который мы оба можем цитировать."}
+    ]
+  },
+  {
+    id:"outside", name:"На улице вдвоём", desc:"Свежий воздух и никакого потолка.",
+    intro:"Проводим вечер на улице.",
+    q:"Куда пойдём?",
+    options:[
+      {name:"Пикник", desc:"Плед и сумка с вкусной едой.",
+       story:"Пикник: один плед и сумка с едой, которая куда лучше, чем было нужно."},
+      {name:"Озеро на закате", desc:"Придём поздно и останемся ещё дольше.",
+       story:"К воде на закат — придём чуть позже, чем надо, и останемся гораздо дольше."},
+      {name:"Ботанический сад", desc:"Тепло, зелено и тихо.",
+       story:"Ботанический сад — тёплый, зелёный и достаточно тихий, чтобы нормально поговорить."},
+      {name:"Прогулка на велосипедах", desc:"Без маршрута. Одна остановка на торт.",
+       story:"Катание на велосипедах без всякого маршрута и обязательная остановка на кусок торта."},
+      {name:"Небольшой поход", desc:"Один холм, один вид, одно фото.",
+       story:"Небольшой поход: один холм, один вид, ради которого стоило идти, и одно фото, которое ты сделаешь вид, что ненавидишь."}
+    ]
+  },
+  {
+    id:"home", name:"Вечер дома", desc:"Дверь закрыта, телефоны отложены.",
+    intro:"Остаёмся дома — дверь закрыта, телефоны экраном вниз.",
+    q:"Чем займёмся?",
+    options:[
+      {name:"Готовим вместе", desc:"Один рецепт, два повара, немного хаоса.",
+       story:"Готовим вместе: один рецепт, два повара и привычное количество хаоса."},
+      {name:"Настольные игры", desc:"По-дружески. Сначала.",
+       story:"Настольные игры — по-дружески ровно до того момента, пока уже нет."},
+      {name:"Киномарафон", desc:"Пледы, снеки и никакого времени окончания.",
+       story:"Киномарафон под всеми пледами, что у нас есть, и без всякой договорённости, когда это закончится."},
+      {name:"Печём что-нибудь", desc:"Мука везде. Оно того стоит.",
+       story:"Печём что-нибудь амбициозное, засыпаем мукой вообще всё и едим ещё тёплым."},
+      {name:"Музыка и танцы на кухне", desc:"Плохо и громко.",
+       story:"Включаем музыку на кухне и танцуем плохо, громко и с незадёрнутыми шторами."}
+    ]
+  }
+];
+
+const chosen = [];
+const stage = document.getElementById("stage");
+const chosenList = document.getElementById("chosen");
+
+function drawChosen(){
+  chosenList.innerHTML = "";
+  chosen.forEach((c,i)=>{
+    const li = document.createElement("li");
+    li.innerHTML = `<span class="num">${NUMERALS[i]}</span><span>${c.name}</span>`;
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = "изменить";
+    btn.addEventListener("click", ()=>{ chosen.length = i; render(); });
+    li.appendChild(btn);
+    chosenList.appendChild(li);
+  });
+}
+
+function renderCourse(title, note, options, onPick){
+  const step = chosen.length;
+  stage.innerHTML = "";
+  const sec = document.createElement("section");
+  sec.className = "course reveal";
+  sec.innerHTML = `
+    <div class="course-head">
+      <span class="course-num">${NUMERALS[step]}</span>
+      <h2>${title}</h2>
+    </div>
+    <p class="course-note">${note}</p>`;
+  const ul = document.createElement("ul");
+  ul.className = "options";
+  options.forEach((opt)=>{
+    const li = document.createElement("li");
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "option";
+    b.innerHTML = `
+      <span class="option-line">
+        <span class="option-name">${opt.name}</span>
+        <span class="leader"></span>
+        <span class="pick">выбрать</span>
+      </span>
+      <span class="option-desc">${opt.desc}</span>`;
+    b.addEventListener("click", ()=>onPick(opt));
+    li.appendChild(b);
+    ul.appendChild(li);
+  });
+  sec.appendChild(ul);
+  stage.appendChild(sec);
+  const first = sec.querySelector(".option");
+  if (step > 0 && first) first.focus();
+}
+
+function renderPlan(){
+  const [a,b,c] = chosen;
+  stage.innerHTML = "";
+  const sec = document.createElement("section");
+  sec.className = "plan reveal";
+  sec.innerHTML = `
+    <h2>Итак, вот наш вечер</h2>
+    <p class="stamp">Выбрала ты · Организую я</p>
+    <div class="plan-body">
+      <p>${a.intro} ${b.story}</p>
+      <p>${c.story}</p>
+      <p>Вот и весь план. Скажи, какой день тебе подходит, а остальное я беру на себя.</p>
+    </div>
+    <div class="card">
+      <dl>
+        <dt>Вечер</dt><dd>${a.name}</dd>
+        <dt>${a.q.replace(/\?$/,"")}</dt><dd>${b.name}</dd>
+        <dt>В финале</dt><dd>${c.name}</dd>
+      </dl>
+    </div>`;
+  const again = document.createElement("button");
+  again.type = "button";
+  again.className = "restart";
+  again.textContent = "Начать заново";
+  again.addEventListener("click", ()=>{ chosen.length = 0; render(); });
+  sec.appendChild(again);
+  stage.appendChild(sec);
+}
+
+function render(){
+  drawChosen();
+  if (chosen.length === 0){
+    renderCourse("Куда идём?", "Только один вариант. Его всегда можно поменять.", activities,
+      (opt)=>{ chosen.push(opt); render(); });
+  } else if (chosen.length === 1){
+    const a = chosen[0];
+    renderCourse(a.q, "И снова только один вариант.", a.options,
+      (opt)=>{ chosen.push(opt); render(); });
+  } else if (chosen.length === 2){
+    renderCourse("И чем закончим вечер?", "Последний выбор.", endings,
+      (opt)=>{ chosen.push(opt); render(); });
+  } else {
+    renderPlan();
+  }
+}
+
+render();
+</script>
+</body>
+</html>
